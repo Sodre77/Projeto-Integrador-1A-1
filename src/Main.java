@@ -66,23 +66,25 @@ public class Main {
 
     private static void menuPizza() {
         System.out.println("\n====== Menu Pizza ======");
-        System.out.println("1: Calabresa");
-        System.out.println("2: Frango com Catupiry");
-        System.out.println("3: Quatro Queijos");
-        System.out.println("4: A moda da casa");
-        System.out.println("5: Baiana");
-        System.out.println("6: Portuguesa");
+        System.out.println("Pizzas normais:");
+        System.out.println("N1: Calabresa");
+        System.out.println("N2: Frango com Catupiry");
+        System.out.println("N3: Quatro Queijos");
+        System.out.println("Pizzas especiais:");
+        System.out.println("E1: A Moda da Casa");
+        System.out.println("E2: Baiana");
+        System.out.println("E3: Portuguesa");
 
         System.out.print("Escolha um sabor: ");
 
-        int pizzaSabor = lerOpcao();
+        String pizzaSabor = scanner.nextLine();
         String PizzaEscolhida = switch (pizzaSabor) {
-            case 1 -> "Calabresa";
-            case 2 -> "Frango com Catupiry";
-            case 3 -> "Quatro Queijos";
-            case 4 -> "A moda da casa";
-            case 5 -> "Baiana";
-            case 6 -> "Portuguesa";
+            case "N1" -> "Calabresa";
+            case "N2" -> "Frango com Catupiry";
+            case "N3" -> "Quatro Queijos";
+            case "E1" -> "A moda da casa";
+            case "E2" -> "Baiana";
+            case "E3" -> "Portuguesa";
             default -> "INVÁLIDO";
         };
 
