@@ -2,134 +2,143 @@ import java.util.Scanner;
 
 public class Main {
 
+    private static final Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        String msg;
-        int opc;
-        int subOpc; // Variável para o sub-menu de tamanhos
-        String enderecoEntrega; // Para armazenar o endereço do usuário
-
         System.out.println("Digite uma mensagem para iniciar:");
-        msg = scanner.nextLine(); // Mensagem inicial qualquer
+        scanner.nextLine(); // Mensagem inicial (não utilizada)
 
-        do {
-            // Exibe o menu principal
-            System.out.println("\n===== Olá, bem vindo a pizzaria ForYou! ======");
-            System.out.println("");
-            System.out.println("Escolha uma opção:");
-            System.out.println("");
-            System.out.println("1 : Menu Pizza");
-            System.out.println("2 : Formas de pagamento");
-            System.out.println("3 : Tempo, preparo e entrega");
-            System.out.println("4 : Onde estamos localizados");
-            System.out.println("5 : Nossas redes sociais");
-            System.out.println("0 : Sair do sistema");
+        while (true) {
+            exibirMenuPrincipal();
+            int opcao = lerOpcao();
 
-            // Lê a opção do usuário
-            opc = scanner.nextInt();
-            scanner.nextLine(); // Limpa o buffer do Enter após o nextInt()
-
-            switch (opc) {
+            switch (opcao) {
                 case 1:
-                    System.out.println("====== Menu Pizza ======");
-                    System.out.println("1: Calabresa");
-                    System.out.println("2: Frango com catupiry");
-                    System.out.println("3: Quatro Queijos");
-                    System.out.println("4: A moda da casa");
-
-                    // Lê a opção do usuário
-                    opc = scanner.nextInt();
-                    scanner.nextLine(); // Limpa o buffer do Enter após o nextInt()
-
-                    // Sub-menu de tamanhos
-                    System.out.println("\nEscolha o tamanho da pizza:");
-                    System.out.println("1: Pequena");
-                    System.out.println("2: Média");
-                    System.out.println("3: Grande");
-                    System.out.println("4: Família");
-
-                    subOpc = scanner.nextInt();
-                    scanner.nextLine(); // Limpa o Enter
-
-                    // Confirmação do pedido
-                    switch (subOpc) {
-                        case 1:
-                            System.out.println("Você escolheu pizza tamanho PEQUENA.");
-                            break;
-                        case 2:
-                            System.out.println("Você escolheu pizza tamanho MÉDIA.");
-                            break;
-                        case 3:
-                            System.out.println("Você escolheu pizza tamanho GRANDE.");
-                            break;
-                        case 4:
-                            System.out.println("Você escolheu pizza tamanho FAMÍLIA.");
-                            break;
-                        default:
-                            System.out.println("Opção de tamanho inválida.");
-                            break;
-
-                    }
-
-                    // Solicita o endereço de entrega
-                    System.out.println("\nInforme o endereço de entrega:");
-                    enderecoEntrega = scanner.nextLine();
-
-                    // Exibe mensagem final do pedido
-                    System.out.println("\nPedido confirmado!");
-                    System.out.println("Endereço informado: " + enderecoEntrega);
-                    System.out.println("Obrigado! O tempo de entrega é no máximo 30 minutos.");
-
-                    // Aguarda interação para voltar ao menu
-                    System.out.println("\nPressione ENTER para voltar ao menu.");
-                    scanner.nextLine(); // Aguarda interação para voltar
+                    menuPizza();
                     break;
-
                 case 2:
-                    System.out.println("Aceitamos cartões de:");
-                    System.out.println("Crédito, débito ou Pix.");
-                    System.out.println("\nPressione ENTER para voltar ao menu.");
-                    scanner.nextLine(); // Aguarda interação para voltar
+                    formasDePagamento();
                     break;
-
                 case 3:
-                    System.out.println("========= Tempo Aproximado =========");
-                    System.out.println("O tempo de preparo é no máximo 30 minutos.");
-                    System.out.println("O tempo de entrega é de 30 minutos, dependendo da sua localidade.");
-                    System.out.println("\nPressione ENTER para voltar ao menu.");
-                    scanner.nextLine();
+                    tempoPreparoEntrega();
                     break;
-
                 case 4:
-                    System.out.println("========== Nosso endereço é:==========.");
-                    System.out.println("Estamos localizados na Rua 04, N 01, St. Central - Goiânia.");
-                    System.out.println("\nPressione ENTER para voltar ao menu.");
-                    scanner.nextLine();
+                    localizacao();
                     break;
-
                 case 5:
-                    System.out.println("========Nossas redes sociais são:========");
-                    System.out.println("Facebook:www.facebook.com/pizzaforyou");
-                    System.out.println("Instagram: @pizzaforyou");
-                    System.out.println("Siga-nos para receber promoções e descontos exclusivos.");
-                    System.out.println("\nPressione ENTER para voltar ao menu.");
-                    scanner.nextLine();
+                    redesSociais();
                     break;
-
                 case 0:
                     System.out.println("Saindo do sistema... Até logo!");
-                    break;
-
+                    scanner.close();
+                    return;
                 default:
                     System.out.println("Opção inválida! Tente novamente.");
-                    System.out.println("\nPressione ENTER para voltar ao menu.");
-                    scanner.nextLine();
-                    break;
             }
+        }
+    }
 
-        } while (opc != 0);
+    private static void exibirMenuPrincipal() {
+        System.out.println("\n===== Olá, bem-vindo à Pizzaria ForYou! =====");
+        System.out.println("1: Menu Pizza");
+        System.out.println("2: Formas de pagamento");
+        System.out.println("3: Tempo de preparo e entrega");
+        System.out.println("4: Onde estamos localizados");
+        System.out.println("5: Nossas redes sociais");
+        System.out.println("0: Sair do sistema");
+        System.out.print("Escolha uma opção: ");
+        System.out.println("\n================================");
+    }
 
-        scanner.close();
+    private static int lerOpcao() {
+        while (!scanner.hasNextInt()) {
+            System.out.println("Por favor, insira um número válido!");
+            scanner.next();
+        }
+        int opcao = scanner.nextInt();
+        scanner.nextLine(); // Limpa buffer
+        return opcao;
+    }
+
+    private static void menuPizza() {
+        System.out.println("\n====== Menu Pizza ======");
+        System.out.println("1: Calabresa");
+        System.out.println("2: Frango com Catupiry");
+        System.out.println("3: Quatro Queijos");
+        System.out.println("4: A moda da casa");
+        System.out.println("5: Baiana");
+        System.out.println("6: Portuguesa");
+
+        System.out.print("Escolha um sabor: ");
+
+        int pizzaSabor = lerOpcao();
+        String PizzaEscolhida = switch (pizzaSabor) {
+            case 1 -> "Calabresa";
+            case 2 -> "Frango com Catupiry";
+            case 3 -> "Quatro Queijos";
+            case 4 -> "A moda da casa";
+            case 5 -> "Baiana";
+            case 6 -> "Portuguesa";
+            default -> "INVÁLIDO";
+        };
+
+        if (PizzaEscolhida.equals("INVÁLIDO")) {
+            System.out.println("Pizza inválida! Voltando ao menu principal.");
+            return;
+        }
+
+        System.out.println("\nEscolha o tamanho da pizza:");
+        System.out.println("1: P");
+        System.out.println("2: M");
+        System.out.println("3: G");
+        System.out.println("4: GG");
+        System.out.print("Escolha o tamanho: ");
+
+
+        int tamanho = lerOpcao();
+        String tamanhoEscolhido = switch (tamanho) {
+            case 1 -> "P";
+            case 2 -> "M";
+            case 3 -> "G";
+            case 4 -> "GG";
+            default -> "INVÁLIDO";
+        };
+
+        if (tamanhoEscolhido.equals("INVÁLIDO")) {
+            System.out.println("Tamanho inválido! Voltando ao menu principal.");
+            return;
+        }
+
+        System.out.print("\nInforme o endereço de entrega: ");
+        String endereco = scanner.nextLine();
+        System.out.println("\n================================");
+        System.out.println("\nPedido confirmado!");
+        System.out.println("Pizza: " + PizzaEscolhida + " - " + tamanhoEscolhido);
+        System.out.println("Endereço: " + endereco);
+        System.out.println("Obrigado! O tempo de entrega é no máximo 30 minutos.");
+        System.out.println("\n================================");
+    }
+
+    private static void formasDePagamento() {
+        System.out.println("\nAceitamos cartões de:");
+        System.out.println("Crédito, débito ou Pix.");
+    }
+
+    private static void tempoPreparoEntrega() {
+        System.out.println("\n========= Tempo Aproximado =========");
+        System.out.println("O tempo de preparo é de até 30 minutos,");
+        System.out.println("mais 30 minutos de tempo de entrega, dependendo da sua localidade.");
+    }
+
+    private static void localizacao() {
+        System.out.println("\n========== Nosso endereço: ==========");
+        System.out.println("Rua Dom jõao XI, N 01, Zona Leste - Arapucas.");
+    }
+
+    private static void redesSociais() {
+        System.out.println("\n======== Nossas redes sociais: ========");
+        System.out.println("Facebook: www.facebook.com/pizzaforyou");
+        System.out.println("Instagram: @pizzaforyou");
+        System.out.println("Siga-nos para receber promoções e descontos exclusivos.");
     }
 }
