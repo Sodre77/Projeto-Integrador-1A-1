@@ -28,6 +28,9 @@ public class Main {
                 case 5:
                     redesSociais();
                     break;
+                case 6:
+                    valores();
+                    break;
                 case 0:
                     System.out.println("Saindo do sistema... Até logo!");
                     scanner.close();
@@ -45,6 +48,7 @@ public class Main {
         System.out.println("3: Tempo de preparo e entrega");
         System.out.println("4: Onde estamos localizados");
         System.out.println("5: Nossas redes sociais");
+        System.out.println("6: Consultar valores");
         System.out.println("0: Sair do sistema");
         System.out.print("Escolha uma opção: ");
         System.out.println("\n================================");
@@ -120,7 +124,7 @@ public class Main {
     }
 
     private static void formasDePagamento() {
-        System.out.println("\nAceitamos cartões de:");
+        System.out.println("\nAceitamos as seguintes formas de pagamento:");
         System.out.println("Crédito, débito ou Pix.");
     }
 
@@ -140,5 +144,21 @@ public class Main {
         System.out.println("Facebook: www.facebook.com/pizzaforyou");
         System.out.println("Instagram: @pizzaforyou");
         System.out.println("Siga-nos para receber promoções e descontos exclusivos.");
+    }
+
+    private static void valores() {
+        System.out.println("Os valores das pizzas são: ");
+        System.out.println("=====Pizzas normais=====");
+        System.out.println("Tamanho:\n" +
+                "P - R$20,00\n" +
+                "M - R$30,00\n" +
+                "G - R$40,00\n" +
+                "GG - R$50,00");
+        System.out.println("=====Pizzas especiais=====");
+        System.out.println("Tamanho:\n" +
+                "P - R$30,00\n" +
+                "M - R$40,00\n" +
+                "G - R$50,00\n" +
+                "GG - R$60,00");
     }
 }
