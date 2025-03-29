@@ -1,12 +1,14 @@
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
+    public static Cardapio cardapio = new Cardapio();
 
     public static void main(String[] args) {
-        System.out.println("Digite uma mensagem para iniciar:");
+        System.out.println("Pressione ENTER para iniciar:");
         scanner.nextLine(); // Mensagem inicial (não utilizada)
+        criarCardapio();
 
         while (true) {
             exibirMenuPrincipal();
@@ -58,26 +60,33 @@ public class Main {
     }
 
     private static void menuPizza() {
-        System.out.println("\n====== Menu Pizza ======");
-        System.out.println("1: Calabresa");
-        System.out.println("2: Frango com Catupiry");
-        System.out.println("3: Quatro Queijos");
-        System.out.println("4: A moda da casa");
-        System.out.println("5: Baiana");
-        System.out.println("6: Portuguesa");
-        System.out.println("0: Cancelar");
-        System.out.print("Escolha um sabor: ");
 
-        int pizzaSabor = lerOpcao(0, 6);
+        System.out.println("\n====== Menu Pizza ======");
+        System.out.println("=====Pizzas Normais=====");
+        int item = 0;
+        while (item < cardapio.normais.size()) {
+            System.out.println((item+1) + " - " + cardapio.normais.get(item));
+            item++;
+        }
+        System.out.println("=====Pizzas Especiais=====");
+        while ((item - cardapio.normais.size()) < cardapio.especiais.size()) {
+            System.out.println((item+1) + " - " + cardapio.especiais.get(item - cardapio.normais.size()));
+            item++;
+        }
+        System.out.println("\n0 - Cancelar pedido");
+        int quantidadeNormal = cardapio.normais.size();
+
+        System.out.print("Escolha um sabor: ");
+        int pizzaSabor = lerOpcao(0, (item));
+
+        String pizzaEscolhida = "";
         if (pizzaSabor == 0) {
             System.out.println("Pedido cancelado! Voltando ao menu principal.");
             return;
         }
-        String[] pizzas = {"Calabresa", "Frango com Catupiry", "Quatro Queijos", "A moda da casa", "Baiana", "Portuguesa"};
-        String pizzaEscolhida = pizzas[pizzaSabor - 1];
-
-
-
+        if (pizzaSabor > cardapio.normais.size()) {
+            pizzaEscolhida = cardapio.especiais.get(pizzaSabor + quantidadeNormal);
+        } else pizzaEscolhida = cardapio.especiais.get(pizzaSabor);
 
         System.out.println("\nEscolha o tamanho da pizza:");
         System.out.println("1: P");
@@ -129,7 +138,7 @@ public class Main {
         System.out.println("\nPedido confirmado!");
         System.out.println("Pizza: " + pizzaEscolhida + " - " + tamanhoEscolhido);
         System.out.println("Endereço: " + endereco);
-        System.out.println("Forma de Pagamento: " + pagamentoEscolhido + " - ");
+        System.out.println("Forma de Pagamento: " + pagamentoEscolhido);
         System.out.println("Obrigado! O tempo de entrega é no máximo 30 minutos.");
         System.out.println("\n================================");
     }
@@ -171,5 +180,17 @@ public class Main {
                 "M - R$" + m + ",00\n" +
                 "G - R$" + g + ",00\n" +
                 "GG - R$" + gg + ",00");
+    }
+
+    private static void criarCardapio() {
+        //Adicionar Pizzas normais
+        cardapio.addNormal("Calabresa");
+        cardapio.addNormal("Frango com Catupiry");
+        cardapio.addNormal("Quatro Queijos");
+
+        //Adicionar Pizzas especiais
+        cardapio.addEspecial("A moda da casa");
+        cardapio.addEspecial("Baiana");
+        cardapio.addEspecial("Portuguesa");
     }
 }
