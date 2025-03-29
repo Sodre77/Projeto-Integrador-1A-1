@@ -10,33 +10,20 @@ public class Main {
 
         while (true) {
             exibirMenuPrincipal();
-            int opcao = lerOpcao();
+            int opcao = lerOpcao(0, 6);
 
             switch (opcao) {
-                case 1:
-                    menuPizza();
-                    break;
-                case 2:
-                    formasDePagamento();
-                    break;
-                case 3:
-                    tempoPreparoEntrega();
-                    break;
-                case 4:
-                    localizacao();
-                    break;
-                case 5:
-                    redesSociais();
-                    break;
-                case 6:
-                    valores();
-                    break;
-                case 0:
+                case 1 -> menuPizza();
+                case 2 -> formasDePagamento();
+                case 3 -> tempoPreparoEntrega();
+                case 4 -> localizacao();
+                case 5 -> redesSociais();
+                case 6 -> exibirValores();
+                case 0 -> {
                     System.out.println("Saindo do sistema... Até logo!");
                     scanner.close();
                     return;
-                default:
-                    System.out.println("Opção inválida! Tente novamente.");
+                }
             }
         }
     }
@@ -54,14 +41,20 @@ public class Main {
         System.out.println("\n================================");
     }
 
-    private static int lerOpcao() {
-        while (!scanner.hasNextInt()) {
-            System.out.println("Por favor, insira um número válido!");
-            scanner.next();
+    private static int lerOpcao(int min, int max) {
+        int opcao;
+        while (true) {
+            while (!scanner.hasNextInt()) {
+                System.out.println("Por favor, insira um número válido!");
+                scanner.next();
+            }
+            opcao = scanner.nextInt();
+            scanner.nextLine(); // Limpa buffer
+            if (opcao >= min && opcao <= max) {
+                return opcao;
+            }
+            System.out.println("Opção inválida! Escolha um número entre " + min + " e " + max + ".");
         }
-        int opcao = scanner.nextInt();
-        scanner.nextLine(); // Limpa buffer
-        return opcao;
     }
 
     private static void menuPizza() {
@@ -72,53 +65,71 @@ public class Main {
         System.out.println("4: A moda da casa");
         System.out.println("5: Baiana");
         System.out.println("6: Portuguesa");
-
+        System.out.println("0: Cancelar");
         System.out.print("Escolha um sabor: ");
 
-        int pizzaSabor = lerOpcao();
-        String PizzaEscolhida = switch (pizzaSabor) {
-            case 1 -> "Calabresa";
-            case 2 -> "Frango com Catupiry";
-            case 3 -> "Quatro Queijos";
-            case 4 -> "A moda da casa";
-            case 5 -> "Baiana";
-            case 6 -> "Portuguesa";
-            default -> "INVÁLIDO";
-        };
-
-        if (PizzaEscolhida.equals("INVÁLIDO")) {
-            System.out.println("Pizza inválida! Voltando ao menu principal.");
+        int pizzaSabor = lerOpcao(0, 6);
+        if (pizzaSabor == 0) {
+            System.out.println("Pedido cancelado! Voltando ao menu principal.");
             return;
         }
+        String[] pizzas = {"Calabresa", "Frango com Catupiry", "Quatro Queijos", "A moda da casa", "Baiana", "Portuguesa"};
+        String pizzaEscolhida = pizzas[pizzaSabor - 1];
+
+
+
 
         System.out.println("\nEscolha o tamanho da pizza:");
         System.out.println("1: P");
         System.out.println("2: M");
         System.out.println("3: G");
         System.out.println("4: GG");
+        System.out.println("0: Cancelar");
         System.out.print("Escolha o tamanho: ");
 
-
-        int tamanho = lerOpcao();
-        String tamanhoEscolhido = switch (tamanho) {
-            case 1 -> "P";
-            case 2 -> "M";
-            case 3 -> "G";
-            case 4 -> "GG";
-            default -> "INVÁLIDO";
-        };
-
-        if (tamanhoEscolhido.equals("INVÁLIDO")) {
-            System.out.println("Tamanho inválido! Voltando ao menu principal.");
+        int tamanho = lerOpcao(0, 4);
+        if (tamanho == 0) {
+            System.out.println("Pedido cancelado! Voltando ao menu principal.");
             return;
         }
 
+        String[] tamanhos = {"P", "M", "G", "GG"};
+        String tamanhoEscolhido = tamanhos[tamanho - 1];
+
+
         System.out.print("\nInforme o endereço de entrega: ");
         String endereco = scanner.nextLine();
+
+
+        System.out.println("\nEscolha a Forma de Pagamento:");
+        System.out.println("1: Cartão de Crédito");
+        System.out.println("2: Cartão de Débito");
+        System.out.println("3: Pix");
+        System.out.println("4: Dinheiro");
+        System.out.println("0: Cancelar");
+        System.out.print("Forma de Pagamento: ");
+
+        int pagamento = lerOpcao(0, 4);
+        if (pagamento == 0) {
+            System.out.println("Pedido cancelado! Voltando ao menu principal.");
+            return;
+        }
+        if (pagamento == 4) {
+            System.out.println("Precisa de troco?");
+            System.out.println("1: Sim");
+            System.out.println("2: Não");
+//            String  = scanner.nextLine();
+        }
+        // Parei aqui
+
+        String[] pagamentos = {"Cartão de Crédito","Cartão de Débito","Pix", "Dinheiro"};
+        String pagamentoEscolhido = pagamentos[pagamento - 1];
+
         System.out.println("\n================================");
         System.out.println("\nPedido confirmado!");
-        System.out.println("Pizza: " + PizzaEscolhida + " - " + tamanhoEscolhido);
+        System.out.println("Pizza: " + pizzaEscolhida + " - " + tamanhoEscolhido);
         System.out.println("Endereço: " + endereco);
+        System.out.println("Forma de Pagamento: " + pagamentoEscolhido + " - ");
         System.out.println("Obrigado! O tempo de entrega é no máximo 30 minutos.");
         System.out.println("\n================================");
     }
@@ -136,7 +147,7 @@ public class Main {
 
     private static void localizacao() {
         System.out.println("\n========== Nosso endereço: ==========");
-        System.out.println("Rua Dom jõao XI, N 01, Zona Leste - Arapucas.");
+        System.out.println("Rua Dom João XI, N 01, Zona Leste - Arapucas.");
     }
 
     private static void redesSociais() {
@@ -146,19 +157,19 @@ public class Main {
         System.out.println("Siga-nos para receber promoções e descontos exclusivos.");
     }
 
-    private static void valores() {
+    private static void exibirValores() {
         System.out.println("Os valores das pizzas são: ");
         System.out.println("=====Pizzas normais=====");
-        System.out.println("Tamanho:\n" +
-                "P - R$20,00\n" +
-                "M - R$30,00\n" +
-                "G - R$40,00\n" +
-                "GG - R$50,00");
+        exibirPrecoPizza(20, 30, 40, 50);
         System.out.println("=====Pizzas especiais=====");
+        exibirPrecoPizza(30, 40, 50, 60);
+    }
+
+    private static void exibirPrecoPizza(int p, int m, int g, int gg) {
         System.out.println("Tamanho:\n" +
-                "P - R$30,00\n" +
-                "M - R$40,00\n" +
-                "G - R$50,00\n" +
-                "GG - R$60,00");
+                "P - R$" + p + ",00\n" +
+                "M - R$" + m + ",00\n" +
+                "G - R$" + g + ",00\n" +
+                "GG - R$" + gg + ",00");
     }
 }
