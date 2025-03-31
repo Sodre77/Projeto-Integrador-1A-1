@@ -129,7 +129,6 @@ public class Main {
         }
 
         String bandeiraCartao = "";
-
         if(pagamento == 1) {
             System.out.println("========== Digite a Bandeira do Cartão: ==========");
             System.out.println("1: Mastercard");
