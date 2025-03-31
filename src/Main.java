@@ -7,7 +7,7 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("Pressione ENTER para iniciar:");
-        scanner.nextLine(); // Mensagem inicial (não utilizada)
+        scanner.nextLine(); // Mensagem inicial
         criarCardapio();
 
         while (true) {
@@ -40,7 +40,7 @@ public class Main {
         System.out.println("6: Consultar valores");
         System.out.println("0: Sair do sistema");
         System.out.print("Escolha uma opção: ");
-        System.out.println("\n================================");
+        System.out.println("\n=============================================");
     }
 
     private static int lerOpcao(int min, int max) {
@@ -74,6 +74,7 @@ public class Main {
             item++;
         }
         System.out.println("\n0 - Cancelar pedido");
+        System.out.println("\n========================");
         int quantidadeNormal = cardapio.normais.size();
 
         System.out.print("Escolha um sabor: ");
@@ -85,10 +86,12 @@ public class Main {
             return;
         }
         if (pizzaSabor > cardapio.normais.size()) {
-            pizzaEscolhida = cardapio.especiais.get(pizzaSabor + quantidadeNormal);
-        } else pizzaEscolhida = cardapio.especiais.get(pizzaSabor);
+            pizzaEscolhida = cardapio.especiais.get(pizzaSabor - quantidadeNormal - 1);
+        } else {
+            pizzaEscolhida = cardapio.normais.get(pizzaSabor - 1);
+        }
 
-        System.out.println("\nEscolha o tamanho da pizza:");
+        System.out.println("\n========== Escolha o tamanho da pizza: ==========");
         System.out.println("1: P");
         System.out.println("2: M");
         System.out.println("3: G");
@@ -110,64 +113,97 @@ public class Main {
         String endereco = scanner.nextLine();
 
 
-        System.out.println("\nEscolha a Forma de Pagamento:");
+        System.out.println("\n========== Escolha a Forma de Pagamento: ==========");
         System.out.println("1: Cartão de Crédito");
         System.out.println("2: Cartão de Débito");
+
         System.out.println("3: Pix");
         System.out.println("4: Dinheiro");
         System.out.println("0: Cancelar");
         System.out.print("Forma de Pagamento: ");
-
         int pagamento = lerOpcao(0, 4);
+
         if (pagamento == 0) {
             System.out.println("Pedido cancelado! Voltando ao menu principal.");
             return;
         }
-        if (pagamento == 4) {
-            System.out.println("Precisa de troco?");
+
+        String bandeiraCartao = "";
+
+        if(pagamento == 1) {
+            System.out.println("========== Digite a Bandeira do Cartão: ==========");
+            System.out.println("1: Mastercard");
+            System.out.println("2: Elo");
+            System.out.println("3: Visa");
+            System.out.println("4: HiperCard");
+            int opcaoBandeira  = lerOpcao(1, 4);
+
+            String[] bandeiras = {"Mastercard", "Elo", "Visa", "HiperCard"};
+            bandeiraCartao = " - " + bandeiras[opcaoBandeira - 1];
+        }
+        if (pagamento == 4 ) {
+            System.out.println("========== Precisa de troco? ==========");
             System.out.println("1: Sim");
             System.out.println("2: Não");
-//            String  = scanner.nextLine();
+            int precisaTroco = lerOpcao(1, 2);
+                if (precisaTroco == 1) {
+                    System.out.print("Digite o valor para o troco: R$ ");
+                    double valorEntregue = scanner.nextDouble();
+                    scanner.nextLine(); // limpar buffer
+                    double troco = valorEntregue - obterPrecoPizza(tamanhoEscolhido, pizzaEscolhida);
+                    System.out.println("Seu troco será de: R$" + troco);
+                }
         }
-        // Parei aqui
 
         String[] pagamentos = {"Cartão de Crédito","Cartão de Débito","Pix", "Dinheiro"};
         String pagamentoEscolhido = pagamentos[pagamento - 1];
 
-        System.out.println("\n================================");
-        System.out.println("\nPedido confirmado!");
+        System.out.println("\n============== Pedido Confirmado!=============");
         System.out.println("Pizza: " + pizzaEscolhida + " - " + tamanhoEscolhido);
         System.out.println("Endereço: " + endereco);
-        System.out.println("Forma de Pagamento: " + pagamentoEscolhido);
+        System.out.println("Forma de Pagamento: " + pagamentoEscolhido + bandeiraCartao );
         System.out.println("Obrigado! O tempo de entrega é no máximo 30 minutos.");
-        System.out.println("\n================================");
+        System.out.println("\n=============================================");
+    }
+
+    private static double obterPrecoPizza(String tamanho, String pizza) {
+        boolean isEspecial = cardapio.especiais.contains(pizza);
+        Map<String, Integer> precos = isEspecial
+                ? Map.of("P", 30, "M", 40, "G", 50, "GG", 60)
+                : Map.of("P", 20, "M", 30, "G", 40, "GG", 50);
+
+        return precos.getOrDefault(tamanho, 0);
     }
 
     private static void formasDePagamento() {
-        System.out.println("\nAceitamos as seguintes formas de pagamento:");
-        System.out.println("Crédito, débito ou Pix.");
+        System.out.println("\n============ Tipos de Pagamentos ============");
+        System.out.println("Crédito, débito, Dinheiro e Pix.");
+        System.out.println("\n=============================================");
     }
 
     private static void tempoPreparoEntrega() {
-        System.out.println("\n========= Tempo Aproximado =========");
+        System.out.println("\n============= Tempo Aproximado ==============");
         System.out.println("O tempo de preparo é de até 30 minutos,");
         System.out.println("mais 30 minutos de tempo de entrega, dependendo da sua localidade.");
+        System.out.println("\n=============================================");
     }
 
     private static void localizacao() {
-        System.out.println("\n========== Nosso endereço: ==========");
+        System.out.println("\n============== Nosso endereço: ==============");
         System.out.println("Rua Dom João XI, N 01, Zona Leste - Arapucas.");
+        System.out.println("\n=============================================");
     }
 
     private static void redesSociais() {
-        System.out.println("\n======== Nossas redes sociais: ========");
+        System.out.println("\n============ Nossas redes sociais: ===========");
         System.out.println("Facebook: www.facebook.com/pizzaforyou");
         System.out.println("Instagram: @pizzaforyou");
         System.out.println("Siga-nos para receber promoções e descontos exclusivos.");
+        System.out.println("\n=============================================");
     }
 
     private static void exibirValores() {
-        System.out.println("Os valores das pizzas são: ");
+        System.out.println("\n======= Valor das Pizzas =======");
         System.out.println("=====Pizzas normais=====");
         exibirPrecoPizza(20, 30, 40, 50);
         System.out.println("=====Pizzas especiais=====");
@@ -180,6 +216,8 @@ public class Main {
                 "M - R$" + m + ",00\n" +
                 "G - R$" + g + ",00\n" +
                 "GG - R$" + gg + ",00");
+        System.out.println("\n=============================================");
+
     }
 
     private static void criarCardapio() {
