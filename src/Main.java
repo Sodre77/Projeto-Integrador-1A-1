@@ -127,7 +127,6 @@ public class Main {
             System.out.println("Precisa de troco?");
             System.out.println("1: Sim");
             System.out.println("2: Não");
-//            String  = scanner.nextLine();
         }
         // Parei aqui
 
