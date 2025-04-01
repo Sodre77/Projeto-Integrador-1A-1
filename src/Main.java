@@ -85,13 +85,10 @@ public class Main {
             System.out.println("Pedido cancelado! Voltando ao menu principal.");
             return;
         }
-        boolean especial = false;
         if (pizzaSabor > cardapio.normais.size()) {
             pizzaEscolhida = cardapio.especiais.get(pizzaSabor - quantidadeNormal - 1);
-            especial = true;
         } else {
             pizzaEscolhida = cardapio.normais.get(pizzaSabor - 1);
-            especial = false;
         }
 
         System.out.println("\n========== Escolha o tamanho da pizza: ==========");
@@ -111,16 +108,6 @@ public class Main {
         String[] tamanhos = {"P", "M", "G", "GG"};
         String tamanhoEscolhido = tamanhos[tamanho - 1];
 
-        System.out.println("=============================");
-        int bebida;
-        String bebidaEscolhida = "Não optou por bebida";
-        System.out.println("Deseja uma bebida?");
-        System.out.println("1 - Sim");
-        System.out.println("2 - Não");
-        bebida = scanner.nextInt();
-        if (bebida == 1) {
-            bebidaEscolhida = menuBebida();
-        }
 
         System.out.print("\nInforme o endereço de entrega: ");
         String endereco = scanner.nextLine();
@@ -129,6 +116,7 @@ public class Main {
         System.out.println("\n========== Escolha a Forma de Pagamento: ==========");
         System.out.println("1: Cartão de Crédito");
         System.out.println("2: Cartão de Débito");
+
         System.out.println("3: Pix");
         System.out.println("4: Dinheiro");
         System.out.println("0: Cancelar");
@@ -171,75 +159,10 @@ public class Main {
 
         System.out.println("\n============== Pedido Confirmado!=============");
         System.out.println("Pizza: " + pizzaEscolhida + " - " + tamanhoEscolhido);
-        System.out.println("Bebida: " + bebidaEscolhida);
         System.out.println("Endereço: " + endereco);
-        System.out.println("Forma de Pagamento: " + pagamentoEscolhido
-                + bandeiraCartao );
+        System.out.println("Forma de Pagamento: " + pagamentoEscolhido + bandeiraCartao );
         System.out.println("Obrigado! O tempo de entrega é no máximo 30 minutos.");
         System.out.println("\n=============================================");
-        System.out.println("Pressione ENTER para voltar ao menu principal.");
-        scanner.nextLine();
-    }
-
-    private static String menuBebida() {
-        String bebida = "";
-        System.out.println("======================");
-        System.out.println("\nO que você deseja?");
-        System.out.println("1 - Refrigerantes");
-        System.out.println("2 - Sucos");
-        System.out.println("3 - Água");
-        System.out.println("0 - Cancelar");
-        System.out.print("\nDigite sua escolha: ");
-        int bebidaEscolhida = lerOpcao(0, 3);
-        switch (bebidaEscolhida) {
-            case 1:
-                System.out.println("=====Escolha seu refrigerante=====");
-                int refri = 0;
-                while (refri < cardapio.refrigerantes.size()) {
-                    System.out.println((refri + 1) + " - " + cardapio.refrigerantes.get(refri));
-                    refri++;
-                }
-                System.out.println("=====Digite sua resposta=====");
-                int refriEscolhido = lerOpcao(0, refri);
-
-                if (refriEscolhido == 0) {
-                    break;
-                } else {
-                    bebida = cardapio.refrigerantes.get(refriEscolhido - 1);
-                }
-                break;
-            case 2:
-                System.out.println("=====Escolha o sabor do seu suco=====");
-                int suco = 0;
-                while (suco < cardapio.sucos.size()) {
-                    System.out.println((suco + 1) + " - " + cardapio.sucos.get(suco));
-                    suco++;
-                }
-                System.out.println("=====Digite sua resposta=====");
-                int sucoEscolhido = lerOpcao(0, suco);
-                if (sucoEscolhido == 0) {
-                    break;
-                } else {
-                    bebida = cardapio.refrigerantes.get(sucoEscolhido - 1);
-                }
-                break;
-            case 3:
-                bebida = "Água";
-                break;
-            case 0:
-                break;
-        }
-        System.out.println("Qual será o tamanho da bebida?");
-        System.out.println("1 - 200ml");
-        System.out.println("2 - 500ml");
-        System.out.println("3 - 1L");
-        System.out.println("4 - 2L");
-        System.out.print("digite sua resposta");
-        int tamanho = lerOpcao(1, 4);
-        String[] tamanhos = {"200ml", "500ml", "1L", "2L"};
-        String tamanhoEscolhido = tamanhos[tamanho - 1];
-        bebida = bebida + " - " + tamanhoEscolhido;
-        return bebida;
     }
 
     private static double obterPrecoPizza(String tamanho, String pizza) {
@@ -255,8 +178,6 @@ public class Main {
         System.out.println("\n============ Tipos de Pagamentos ============");
         System.out.println("Crédito, débito, Dinheiro e Pix.");
         System.out.println("\n=============================================");
-        System.out.println("Pressione ENTER para voltar ao menu principal.");
-        scanner.nextLine();
     }
 
     private static void tempoPreparoEntrega() {
@@ -264,16 +185,12 @@ public class Main {
         System.out.println("O tempo de preparo é de até 30 minutos,");
         System.out.println("mais 30 minutos de tempo de entrega, dependendo da sua localidade.");
         System.out.println("\n=============================================");
-        System.out.println("Pressione ENTER para voltar ao menu principal.");
-        scanner.nextLine();
     }
 
     private static void localizacao() {
         System.out.println("\n============== Nosso endereço: ==============");
         System.out.println("Rua Dom João XI, N 01, Zona Leste - Arapucas.");
         System.out.println("\n=============================================");
-        System.out.println("Pressione ENTER para voltar ao menu principal.");
-        scanner.nextLine();
     }
 
     private static void redesSociais() {
@@ -282,8 +199,6 @@ public class Main {
         System.out.println("Instagram: @pizzaforyou");
         System.out.println("Siga-nos para receber promoções e descontos exclusivos.");
         System.out.println("\n=============================================");
-        System.out.println("Pressione ENTER para voltar ao menu principal.");
-        scanner.nextLine();
     }
 
     private static void exibirValores() {
@@ -292,8 +207,6 @@ public class Main {
         exibirPrecoPizza(20, 30, 40, 50);
         System.out.println("=====Pizzas especiais=====");
         exibirPrecoPizza(30, 40, 50, 60);
-        System.out.println("Pressione ENTER para voltar ao menu principal.");
-        scanner.nextLine();
     }
 
     private static void exibirPrecoPizza(int p, int m, int g, int gg) {
@@ -303,6 +216,7 @@ public class Main {
                 "G - R$" + g + ",00\n" +
                 "GG - R$" + gg + ",00");
         System.out.println("\n=============================================");
+
     }
 
     private static void criarCardapio() {
@@ -315,17 +229,5 @@ public class Main {
         cardapio.addEspecial("A moda da casa");
         cardapio.addEspecial("Baiana");
         cardapio.addEspecial("Portuguesa");
-
-        //Adicionar refrigerantes
-        cardapio.addRefrigerante("Coca-Cola");
-        cardapio.addRefrigerante("Pepsi Cola");
-        cardapio.addRefrigerante("Guaraná Antartica");
-        cardapio.addRefrigerante("Mineiro");
-
-        //Adicionar sucos
-        cardapio.addSuco("Laranja");
-        cardapio.addSuco("Uva");
-        cardapio.addSuco("Abacaxi");
-        cardapio.addSuco("Limão");
     }
 }
