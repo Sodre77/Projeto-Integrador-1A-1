@@ -60,71 +60,88 @@ public class Main {
     }
 
     private static void menuPizza() {
+        List<String> pizzasPedidas = new ArrayList<>();
+        List<String> tamanhosPedidos = new ArrayList<>();
+        double valorTotal = 0;
+        String bebidaEscolhida = "Não optou por bebida";
+        boolean continuarPedido = true;
 
-        System.out.println("\n====== Menu Pizza ======");
-        System.out.println("=====Pizzas Normais=====");
-        int item = 0;
-        while (item < cardapio.normais.size()) {
-            System.out.println((item+1) + " - " + cardapio.normais.get(item));
-            item++;
+        while (continuarPedido) {
+            System.out.println("\n====== Menu Pizza ======");
+            int item = 0;
+
+            System.out.println("=====Pizzas Normais=====");
+            for (String pizza : cardapio.normais) {
+                System.out.println((++item) + " - " + pizza);
+            }
+
+            System.out.println("=====Pizzas Especiais=====");
+            for (String pizza : cardapio.especiais) {
+                System.out.println((++item) + " - " + pizza);
+            }
+
+            System.out.println("\n0 - Cancelar pedido");
+            System.out.print("\nEscolha um sabor: ");
+            int pizzaSabor = lerOpcao(0, item);
+
+            if (pizzaSabor == 0) {
+                System.out.println("Pedido cancelado! Voltando ao menu principal.");
+                return;
+            }
+
+            boolean especial = pizzaSabor > cardapio.normais.size();
+            String pizzaEscolhida = especial
+                    ? cardapio.especiais.get(pizzaSabor - cardapio.normais.size() - 1)
+                    : cardapio.normais.get(pizzaSabor - 1);
+
+            System.out.println("\n========== Escolha o tamanho da pizza: ==========");
+            String[] tamanhos = {"P", "M", "G", "GG"};
+            for (int i = 0; i < tamanhos.length; i++) {
+                System.out.println((i + 1) + ": " + tamanhos[i]);
+            }
+            System.out.print("Escolha o tamanho: ");
+            int tamanho = lerOpcao(0, 4);
+
+            if (tamanho == 0) {
+                System.out.println("Pedido cancelado! Voltando ao menu principal.");
+                return;
+            }
+
+            String tamanhoEscolhido = tamanhos[tamanho - 1];
+
+            // Adiciona a pizza e tamanho às listas
+            pizzasPedidas.add(pizzaEscolhida);
+            tamanhosPedidos.add(tamanhoEscolhido);
+
+            // Adiciona o valor ao total
+            valorTotal += obterPrecoPizza(tamanhoEscolhido, pizzaEscolhida);
+
+            // Perguntar se deseja pedir mais outra pizza
+            System.out.println("\n========== Deseja pedir mais uma pizza? ==========");
+            System.out.println("1: Sim");
+            System.out.println("2: Não");
+            System.out.print("Sua escolha: ");
+            int maisUma = lerOpcao(1, 2);
+
+            if (maisUma == 2) {
+                continuarPedido = false;
+            }
         }
-        System.out.println("=====Pizzas Especiais=====");
-        while ((item - cardapio.normais.size()) < cardapio.especiais.size()) {
-            System.out.println((item+1) + " - " + cardapio.especiais.get(item - cardapio.normais.size()));
-            item++;
-        }
-        System.out.println("\n0 - Cancelar pedido");
-        System.out.println("\n========================");
-        int quantidadeNormal = cardapio.normais.size();
 
-        System.out.print("Escolha um sabor: ");
-        int pizzaSabor = lerOpcao(0, (item));
-
-        String pizzaEscolhida = "";
-        if (pizzaSabor == 0) {
-            System.out.println("Pedido cancelado! Voltando ao menu principal.");
-            return;
-        }
-        boolean especial = false;
-        if (pizzaSabor > cardapio.normais.size()) {
-            pizzaEscolhida = cardapio.especiais.get(pizzaSabor - quantidadeNormal - 1);
-            especial = true;
-        } else {
-            pizzaEscolhida = cardapio.normais.get(pizzaSabor - 1);
-            especial = false;
-        }
-
-        System.out.println("\n========== Escolha o tamanho da pizza: ==========");
-        System.out.println("1: P");
-        System.out.println("2: M");
-        System.out.println("3: G");
-        System.out.println("4: GG");
-        System.out.println("0: Cancelar");
-        System.out.print("Escolha o tamanho: ");
-
-        int tamanho = lerOpcao(0, 4);
-        if (tamanho == 0) {
-            System.out.println("Pedido cancelado! Voltando ao menu principal.");
-            return;
-        }
-
-        String[] tamanhos = {"P", "M", "G", "GG"};
-        String tamanhoEscolhido = tamanhos[tamanho - 1];
-
+        // Após terminar de pedir as pizzas, continua com o resto do pedido
         System.out.println("=============================");
         int bebida;
-        String bebidaEscolhida = "Não optou por bebida";
         System.out.println("Deseja uma bebida?");
         System.out.println("1 - Sim");
         System.out.println("2 - Não");
         bebida = scanner.nextInt();
+        scanner.nextLine(); // Limpar buffer
         if (bebida == 1) {
             bebidaEscolhida = menuBebida();
         }
 
         System.out.print("\nInforme o endereço de entrega: ");
         String endereco = scanner.nextLine();
-
 
         System.out.println("\n========== Escolha a Forma de Pagamento: ==========");
         System.out.println("1: Cartão de Crédito");
@@ -141,6 +158,8 @@ public class Main {
         }
 
         String bandeiraCartao = "";
+        String pix = "";
+
         if(pagamento == 1) {
             System.out.println("========== Digite a Bandeira do Cartão: ==========");
             System.out.println("1: Mastercard");
@@ -151,30 +170,39 @@ public class Main {
 
             String[] bandeiras = {"Mastercard", "Elo", "Visa", "HiperCard"};
             bandeiraCartao = " - " + bandeiras[opcaoBandeira - 1];
-        }
-        if (pagamento == 4 ) {
+        } else if(pagamento == 3) {
+            pix = "PIX: pizzaforyou@teste.com.br";
+        } else if(pagamento == 4) {
             System.out.println("========== Precisa de troco? ==========");
             System.out.println("1: Sim");
             System.out.println("2: Não");
             int precisaTroco = lerOpcao(1, 2);
-                if (precisaTroco == 1) {
-                    System.out.print("Digite o valor para o troco: R$ ");
-                    double valorEntregue = scanner.nextDouble();
-                    scanner.nextLine(); // limpar buffer
-                    double troco = valorEntregue - obterPrecoPizza(tamanhoEscolhido, pizzaEscolhida);
-                    System.out.println("Seu troco será de: R$" + troco);
-                }
+            if (precisaTroco == 1) {
+                System.out.print("Digite o valor para o troco: R$ ");
+                double valorEntregue = scanner.nextDouble();
+                scanner.nextLine(); // limpar buffer
+                double troco = valorEntregue - valorTotal;
+                System.out.println("Seu troco será de: R$" + troco);
+            }
         }
 
         String[] pagamentos = {"Cartão de Crédito","Cartão de Débito","Pix", "Dinheiro"};
         String pagamentoEscolhido = pagamentos[pagamento - 1];
 
         System.out.println("\n============== Pedido Confirmado!=============");
-        System.out.println("Pizza: " + pizzaEscolhida + " - " + tamanhoEscolhido);
+        for (int i = 0; i < pizzasPedidas.size(); i++) {
+            System.out.println((i+1) + ". " + "Pizza de " + pizzasPedidas.get(i) + " - " + tamanhosPedidos.get(i));
+        }
         System.out.println("Bebida: " + bebidaEscolhida);
         System.out.println("Endereço: " + endereco);
-        System.out.println("Forma de Pagamento: " + pagamentoEscolhido
-                + bandeiraCartao );
+        System.out.println("Forma de Pagamento: " + pagamentoEscolhido + bandeiraCartao);
+        System.out.println("\n===============Atenção!!!====================");
+        if(pagamento == 3) {
+            System.out.println("Por favor, envie o comprovante para o número (62)9 9999-9999");
+            System.out.println(pix);
+        }
+        System.out.println("\n=============================================");
+        System.out.println("Valor Total: R$ " + valorTotal);
         System.out.println("Obrigado! O tempo de entrega é no máximo 30 minutos.");
         System.out.println("\n=============================================");
         System.out.println("Pressione ENTER para voltar ao menu principal.");
@@ -234,7 +262,7 @@ public class Main {
         System.out.println("2 - 500ml");
         System.out.println("3 - 1L");
         System.out.println("4 - 2L");
-        System.out.print("digite sua resposta");
+        System.out.print("digite sua resposta: ");
         int tamanho = lerOpcao(1, 4);
         String[] tamanhos = {"200ml", "500ml", "1L", "2L"};
         String tamanhoEscolhido = tamanhos[tamanho - 1];
