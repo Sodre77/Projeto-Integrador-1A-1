@@ -279,6 +279,15 @@ public class Main {
         return precos.getOrDefault(tamanho, 0);
     }
 
+    private static double obterPrecoBebida(String tamanho, String bebida) {
+        boolean isSuco = cardapio.sucos.contains(bebida);
+        Map<String, Integer> precos = isSuco
+                ? Map.of("P", 2, "M", 5, "G", 8, "GG", 10)
+                : Map.of("P", 5, "M", 8, "G", 10, "GG", 12);
+
+        return precos.getOrDefault(tamanho, 0);
+    }
+
     private static void formasDePagamento() {
         System.out.println("\n============ Tipos de Pagamentos ============");
         System.out.println("Crédito, débito, Dinheiro e Pix.");
@@ -317,19 +326,30 @@ public class Main {
     private static void exibirValores() {
         System.out.println("\n======= Valor das Pizzas =======");
         System.out.println("=====Pizzas normais=====");
-        exibirPrecoPizza(20, 30, 40, 50);
+        exibirPrecos(20, 30, 40, 50);
         System.out.println("=====Pizzas especiais=====");
-        exibirPrecoPizza(30, 40, 50, 60);
+        exibirPrecos(30, 40, 50, 60);
+        System.out.println("=====Refrigerantes=====");
+        exibirPrecos(5, 8, 10, 12);
+        System.out.println("=====Sucos=====");
+        exibirPrecos(2, 5, 8, 10);
+        System.out.println("Água:");
+        exibirPrecos(1, 2, 4, 6);
         System.out.println("Pressione ENTER para voltar ao menu principal.");
         scanner.nextLine();
     }
 
-    private static void exibirPrecoPizza(int p, int m, int g, int gg) {
+    private static void exibirPrecos(int p, int m, int g, int gg) {
         System.out.println("Tamanho:\n" +
                 "P - R$" + p + ",00\n" +
                 "M - R$" + m + ",00\n" +
                 "G - R$" + g + ",00\n" +
                 "GG - R$" + gg + ",00");
+//        Se for bebida:
+//        P = 200ml
+//        M = 500ml
+//        G = 1L
+//        GG = 2L
         System.out.println("\n=============================================");
     }
 
