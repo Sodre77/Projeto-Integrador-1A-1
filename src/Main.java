@@ -307,7 +307,7 @@ public class Main {
 
     private static void localizacao() {
         System.out.println("\n============== Nosso endereço: ==============");
-        System.out.println("Rua Dom João XI, N 01, Zona Leste - Arapucas.");
+        System.out.println("Rua 04, Centro, Goiania, N 244.");// ENDEREÇO IPOTETICO....
         System.out.println("\n=============================================");
         System.out.println("Pressione ENTER para voltar ao menu principal.");
         scanner.nextLine();
@@ -316,7 +316,7 @@ public class Main {
     private static void redesSociais() {
         System.out.println("\n============ Nossas redes sociais: ===========");
         System.out.println("Facebook: www.facebook.com/pizzaforyou");
-        System.out.println("Instagram: @pizzaforyou");
+        System.out.println("Instagram: https://www.instagram.com/pizzaforyou");
         System.out.println("Siga-nos para receber promoções e descontos exclusivos.");
         System.out.println("\n=============================================");
         System.out.println("Pressione ENTER para voltar ao menu principal.");
